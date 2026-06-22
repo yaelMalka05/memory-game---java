@@ -1,23 +1,25 @@
 package memoryGame;
 
+import javax.swing.ImageIcon;
+
 public class Card {
 	
-	public int value;
+	public ImageIcon value;
 	public boolean isOpen;
 	public boolean isFound;
 	
 	
-	public Card(int v) {
+	public Card(ImageIcon v) {
 		this.value = v;
 		this.isOpen = false;
 		this.isFound = false;
 	}
 	
 	
-	public int getValue() {
+	public ImageIcon getValue() {
 		return value;
 	}
-	public void setValue(int value) {
+	public void setValue(ImageIcon value) {
 		this.value = value;
 	}
 	public boolean isOpen() {

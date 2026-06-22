@@ -34,6 +34,8 @@ public class GamePanel extends JPanel{
 	
 	public CardButton [] arr;
 	
+	private GameStatusPanel gs;
+	
 	public GameOn go;
 	
 	public void RebootPanel() {
@@ -50,28 +52,92 @@ public class GamePanel extends JPanel{
 		for(int i=0; i<this.arr.length; i++) {
 			this.arr[i].Refresh();
 		}
+		revalidate();
+	    repaint();
 	}
 	
 	
 	
 	
-	public GamePanel(GameOn game) {
-		this.arr = new CardButton[16];
-		this.setLayout(new GridLayout(4,4,10,10));
-		this.go = game; 
-		Card [] cards = this.go.getB().getCards();
-		for(int i=0; i<cards.length; i++) {
-			this.arr[i] = new CardButton(cards[i]);
-			this.add(arr[i]);
-		}
-		for(int i=0; i<this.arr.length; i++) {
-			this.arr[i].Refresh();
-		}
+//	public GamePanel(GameOn game , GameStatusPanel gamestatus) {
+//		this.arr = new CardButton[16];
+//		this.setLayout(new GridLayout(4,4,10,10));
+//		this.go = game; 
+//		this.gs = gamestatus;
+//		Card [] cards = this.go.getB().getCards();
+//		for(int i=0; i<cards.length; i++) 
+//		{
+//			this.arr[i] = new CardButton(cards[i]);
+//			
+//			this.arr[i].addActionListener(e -> {
+//		    CardButton btn = (CardButton)e.getSource();
+//		    this.go.chooseCard(btn.GetCard());
+//		    
+//		    this.BoardRefresh();
+//		    this.gs.Refresh();
+//		});
+////			this.arr[i].GetCard();
+//			
+//		this.add(arr[i]);
+//		}
+//		for(int i=0; i<this.arr.length; i++) {
+//			this.arr[i].Refresh();
+//		}
 		
 //		this.RebootPanel();
 //		this.setLayout(new GridLayout(4,4,10,10));
 //		this.BoardRefresh();
+//	}
+	public GamePanel(GameOn game, GameStatusPanel gamestatus) {
+	    this.arr = new CardButton[16];
+	    this.setLayout(new GridLayout(4, 4, 10, 10));
+	    this.go = game;
+	    this.gs = gamestatus;
+	    
+	    // הגדרת קולבק שיעדכן את הלוח ואת סטטוס הנקודות בכל שינוי במשחק
+	    this.go.setUpdateCallback(() -> {
+	        BoardRefresh();
+	        gs.Refresh();
+	    });
+	    
+	    // שליחת הכרטיסים מהלוח ואתחול כפתורי התצוגה
+	    Card[] cards = go.getB().getCards();
+	    for (int i = 0; i < this.arr.length; i++) {
+	        this.arr[i] = new CardButton(cards[i]);
+	        CardButton btn = this.arr[i];
+	        
+	        // הוספת מאזין לחיצה לכל כפתור
+	        btn.addActionListener(e -> {
+	            go.chooseCard(btn.GetCard());
+	        });
+	        
+	        this.add(btn); // הוספת הכפתור לפאנל הגרפי
+	    }
+	    
+	    BoardRefresh(); // ריענון ראשוני של הלוח
 	}
+	
+	
+	// פונקציה חדשה שמנקה את הלוח הגרפי ומייצרת כפתורים חדשים
+		public void restartBoard() {
+			this.removeAll(); // מוחק את כל הכפתורים הישנים מהמסך
+			
+			Card[] cards = go.getB().getCards(); // לוקח את מערך הקלפים החדש
+			for (int i = 0; i < this.arr.length; i++) {
+				this.arr[i] = new CardButton(cards[i]);
+				CardButton btn = this.arr[i];
+				
+				// מחבר מחדש את מאזין הלחיצה לכל כפתור
+				btn.addActionListener(e -> {
+					go.chooseCard(btn.GetCard());
+				});
+				
+				this.add(btn); // מוסיף את הכפתור החדש לפאנל
+			}
+			
+			BoardRefresh(); // מריץ ריענון גרפי כדי שהשינויים יראו על המסך
+		}
+	
 	
 	
 	
