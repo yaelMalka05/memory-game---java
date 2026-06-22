@@ -1,105 +1,70 @@
-package memoryGame;
-import javax.swing.*;
-import java.util.Scanner;
+package ng;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Component;
+import java.awt.Dimension;
+import javax.swing.*;
 
 public class StartPanel extends JPanel {
+    
+    private GameOn game;
+    private GameFrame frame;
 
-	
-	
-//	public StartPanel(GameOn game , GameStatusPanel gamestatus) {
-//		
-//		this.game.setUpdateCallback(() -> {
-////	        BoardRefresh();
-//	        gamestatus.Refresh();
-//	    });
-//	}
-//	
-//	Scanner s = new Scanner (System.in);
-//	
-//	public int i;
-//    public String n1;
-//	public String n2;
-//	
-//	Player p1 = new Player(n1);
-//	Player p2 = new Player(n2);
-//	GameOn game = new GameOn(p1, p2);
-//	
-//	public void setNamePlayer() {
-//		i = 0 ;
-//		n1 = null;
-//		n2 = null;
-//		while(i<2) {
-//			System.out.println("enter 1 name");
-//			this.n1 = s.next();
-//			System.out.println("enter 2 name");
-//			this.n2 = s.next();
-//			i++;
-//		}
-//	}
-	
-	
+    public StartPanel(GameOn game, GameFrame frame) {
+        this.game = game;
+        this.frame = frame;
+        
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setBackground(new Color(230, 216, 250)); 
+        
+        JLabel title = new JLabel("Welcome to Memory Game!");
+        title.setFont(new Font("Arial", Font.BOLD, 40));
+        title.setForeground(Color.RED);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        JLabel label1 = new JLabel("Player 1 Name:");
+        label1.setFont(new Font("Arial", Font.BOLD, 20));
+        label1.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        JTextField player1Field = new JTextField(15);
+        player1Field.setMaximumSize(new Dimension(200, 30));
+        player1Field.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        JLabel label2 = new JLabel("Player 2 Name:");
+        label2.setFont(new Font("Arial", Font.BOLD, 20));
+        label2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        JTextField player2Field = new JTextField(15);
+        player2Field.setMaximumSize(new Dimension(200, 30));
+        player2Field.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        JButton startButton = new JButton("Start Game!");
+        startButton.setFont(new Font("Arial", Font.BOLD, 24));
+        startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        startButton.setBackground(Color.WHITE);
+        
+        add(Box.createVerticalStrut(100));
+        add(title);
+        add(Box.createVerticalStrut(50));
+        add(label1);
+        add(Box.createVerticalStrut(5));
+        add(player1Field);
+        add(Box.createVerticalStrut(20));
+        add(label2);
+        add(Box.createVerticalStrut(5));
+        add(player2Field);
+        add(Box.createVerticalStrut(50));
+        add(startButton);
 
-	
-
-	
-	private GameFrame frame;
-	    private GameOn game;
-	    private GameStatusPanel gamestatus;
-
-	    public StartPanel(GameOn game, GameStatusPanel gamestatus , GameFrame frame) {
-
-	        this.game = game;
-	        this.gamestatus = gamestatus;
-	        this.frame = frame;
-	        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-	        JLabel label1 = new JLabel("Player 1 name:");
-	        JTextField player1Field = new JTextField(15);
-
-	        JLabel label2 = new JLabel("Player 2 name:");
-	        JTextField player2Field = new JTextField(15);
-
-	        JButton startButton = new JButton("Start Game");
-
-	        add(label1);
-	        add(player1Field);
-	        add(label2);
-	        add(player2Field);
-	        add(startButton);
-
-//	        startButton.addActionListener(e -> {
-//
-	            String n1 = player1Field.getText();
-	            String n2 = player2Field.getText();
-//
-//	            game.setPlayers(n1, n2); // תצטרך לממש מתודה כזו
-////	            game.setP1(n1);
-////	            game.setP2(n2);
-//	            gamestatus.Refresh();
-//
-//	            
-//	            gamestatus.Refresh();
-
-//	            frame.show("game"); // 👈 מעבר למסך משחק
-	            startButton.addActionListener(e -> {
-	                game.setPlayers(n1, n2);
-	                gamestatus.Refresh();
-	                frame.showStartScreen("game");
-	            });
-	            
-	            // מעבר מסך אם אתה משתמש ב-CardLayout
-	            // cardLayout.show(mainPanel, "game");
-//	        });
-	    }
-	
-	
-	    
-	
-	
-	
+        startButton.addActionListener(e -> {
+            String n1 = player1Field.getText().isEmpty() ? "Player 1" : player1Field.getText();
+            String n2 = player2Field.getText().isEmpty() ? "Player 2" : player2Field.getText();
+            
+            game.setPlayers(n1, n2);
+            game.restartGame(1); 
+            frame.startGame(); 
+        });
+    }
 }

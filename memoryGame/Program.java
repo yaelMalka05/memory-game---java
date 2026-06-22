@@ -1,12 +1,9 @@
-package memoryGame;
+package ng;
 
-public class Pogram {
+public class Program {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
-//		public Runnable r;
-//		
 		new GameFrame();
 	}
 
